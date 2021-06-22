@@ -1,5 +1,19 @@
-GET localhost:8080/authorize?user=Vlad&password=6789
-
-###
+### админ
 
 GET localhost:8080/authorize?user=Ivan&password=1234
+
+### гость
+
+GET localhost:8080/authorize?user=Pasha&password=7890
+
+### гость c неправильным паролем
+
+GET localhost:8080/authorize?user=Pasha&password=12321
+
+### 400
+
+GET localhost:8080/authorize?user=&password=
+
+### 401
+
+GET localhost:8080/authorize?user=Dasha&password=1423

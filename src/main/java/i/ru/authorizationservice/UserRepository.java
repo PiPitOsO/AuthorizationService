@@ -1,9 +1,6 @@
 package i.ru.authorizationservice;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,23 +35,24 @@ public class UserRepository {
         ArrayList<Authorities> unwanted = new ArrayList<>(); //без доступа
 
         HashMap<String, ArrayList<Authorities>> access = new HashMap<>(); //присвоим пользователю перечень прав
+        access.put("InvalidPassword", unwanted);
         access.put("Ivan", admin);
         access.put("Petr", admin);
         access.put("Anna", employee);
         access.put("Kirill", employee);
         access.put("Oleg", guest);
-        access.put("Vlad", unwanted);
+        access.put("Vlad", guest);
         access.put("Pasha", guest);
 
-        if (users.get(user).equals(password)) { //проверим пароль пользователя по логину с паролям в запросе
-            return access.get(user); //отправляем лист прав
-        } else {
-            throw new InvalidCredentials("Invalid password"); //при неверном пароле выбрасываем исключение и ловим его
+        if (users.get(user) == null) { //проверяем есть ли такой пользователь
+            access.put(user, unwanted); //добавляем без прав
+            return access.get(user); //отдаём
         }
-    }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST) //400
-    @ExceptionHandler(InvalidCredentials.class)
-    public void handleInvalidCredentials(InvalidCredentials e) {
+        if (users.get(user).equals(password)) { //проверим пароль пользователя по логину с паролям в запросе
+            return access.get(user); //если нашёл и пароль совпал отправляем
+        } else {
+            throw new UnauthorizedUser("Invalid user password: " + user); //исключение при не верном пароле
+        }
     }
 }
