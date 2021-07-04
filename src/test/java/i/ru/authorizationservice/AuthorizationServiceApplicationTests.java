@@ -10,7 +10,6 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-@Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class AuthorizationServiceApplicationTests {
     @Autowired
@@ -24,11 +23,11 @@ class AuthorizationServiceApplicationTests {
     public static GenericContainer<?> prodapp = new GenericContainer<>("prodapp:latest")
             .withExposedPorts(8081);
 
-//    @BeforeAll
-//    public static void setUp() {
-//        devapp.start();
-//        prodapp.start();
-//    }
+    @BeforeAll
+    public static void setUp() {
+        devapp.start();
+        prodapp.start();
+    }
 
     @Test
     void contextLoads() {
