@@ -8,7 +8,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class AuthorizationServiceApplicationTests {
@@ -31,9 +30,9 @@ class AuthorizationServiceApplicationTests {
 
     @Test
     void contextLoads() {
-        ResponseEntity<String> forEntity1 = restTemplate.getForEntity("http://localhost:" + devapp.getMappedPort(8080), String.class);
-        ResponseEntity<String> forEntity2 = restTemplate.getForEntity("http://localhost:" + prodapp.getMappedPort(8081), String.class);
-        System.out.println(forEntity1.getBody());
-        System.out.println(forEntity2.getBody());
+        ResponseEntity<String> forEntity1 = restTemplate.getForEntity("http://localhost:" + devapp.getMappedPort(8080) + "/authorize?user=Ivan&password=1234", String.class);
+        ResponseEntity<String> forEntity2 = restTemplate.getForEntity("http://localhost:" + prodapp.getMappedPort(8081) + "/authorize?user=Pasha&password=7890", String.class);
+        System.out.println("devapp " + forEntity1.getBody());
+        System.out.println("prodapp " + forEntity2.getBody());
     }
 }
